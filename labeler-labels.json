@@ -1,0 +1,74 @@
+{
+	"labels": [
+		{
+			"name": "database",
+			"description": "",
+			"color": "00758F"
+		},
+		{
+			"name": "php",
+			"description": "",
+			"color": "474A8A"
+		},
+		{
+			"name": "javascript",
+			"description": "",
+			"color": "F0DB4F"
+		},
+    {
+			"name": "investigation",
+			"description": "",
+			"color": "F0DB4F"
+		},
+		{
+			"name": "dependencies",
+			"description": "",
+			"color": "0052CC"
+		},
+		{
+			"name": "docs",
+			"description": "",
+			"color": "007BFF"
+		},
+		{
+			"name": "testing",
+			"description": "",
+			"color": "4EE5F6"
+		},
+		{
+			"name": "priority: max",
+			"description": "",
+			"color": "E03B34"
+		},
+		{
+			"name": "priority: high",
+			"description": "",
+			"color": "FEA73A"
+		},
+		{
+			"name": "priority: medium",
+			"description": "",
+			"color": "ECE931"
+		},
+		{
+			"name": "priority: low",
+			"description": "",
+			"color": "70EC31"
+		},
+		{
+			"name": "bug",
+			"description": "",
+			"color": "D9534F"
+		},
+		{
+			"name": "idea",
+			"description": "",
+			"color": "00ABE1"
+		},
+		{
+			"name": "feature",
+			"description": "",
+			"color": "7F15E0"
+		}
+	]
+}
