@@ -55,7 +55,7 @@ class FileController extends Controller
      */
     public function show(File $file)
     {
-        //
+        return view('admin.files.show', ['file' => $file]);
     }
 
     /**

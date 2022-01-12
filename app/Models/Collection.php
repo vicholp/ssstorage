@@ -14,9 +14,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $slug
  * @property string $path
  * @property int|null $collection_id
- * @property int $webp
  * @property-read \Illuminate\Database\Eloquent\Collection|Collection[] $childrenCollections
  * @property-read int|null $children_collections_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $files
+ * @property-read int|null $files_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ImageSpec[] $imageSpecs
  * @property-read int|null $image_specs_count
  * @property-read Collection|null $parentCollection
@@ -30,7 +31,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Collection wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Collection whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Collection whereWebp($value)
  * @mixin \Eloquent
  */
 class Collection extends Model
@@ -60,6 +60,15 @@ class Collection extends Model
     public function files()
     {
         return $this->hasMany(File::class);
+    }
+
+    public function getUrl()
+    {
+        if ($this->parentCollection) {
+            $collection = [...$this->parentCollection->getUrl(), $this->slug];
+            return $collection;
+        }
+        return [$this->slug];
     }
 
     public function getAncestors()

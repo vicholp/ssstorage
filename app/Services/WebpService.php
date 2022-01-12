@@ -23,7 +23,7 @@ class WebpService
         $process = new Process([base_path('cwebp'), "-resize", $spec->width, $spec->height, $old_path, "-o", $new_path, "-quiet"]);
         $process->run();
 
-        if (!$process->isSuccessful()) {
+        if (! $process->isSuccessful()) {
             dd($process->getErrorOutput());
         }
 

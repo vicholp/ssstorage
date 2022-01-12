@@ -2,19 +2,18 @@
 
 namespace App\Console\Commands;
 
-use App\Models\Collection;
-use App\Models\ImageSpec;
+use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
-class CreateTestData extends Command
+class CreateUser extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'make:testData';
+    protected $signature = 'make:user';
 
     /**
      * The console command description.
@@ -40,19 +39,17 @@ class CreateTestData extends Command
      */
     public function handle()
     {
-        $collection = Collection::create([
-            'name' => 'test',
-            'slug' => 'test',
-            'path' => 'test',
+        $name = $this->ask('What is your name?');
+        $email = $this->ask('What is your email?');
+        $password = $this->secret('What is your password?');
 
-            'webp' => true,
+        User::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => Hash::make($password),
         ]);
 
-        ImageSpec::create([
-            'collection_id' => $collection->id,
-            'height' => '700',
-            'width' => '0',
-        ]);
+        $this->info('User created successfully!');
 
         return 0;
     }

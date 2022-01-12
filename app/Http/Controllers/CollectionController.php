@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCollectionRequest;
 use App\Http\Requests\UpdateCollectionRequest;
 use App\Models\Collection;
+use App\Models\ImageSpec;
 
 class CollectionController extends Controller
 {
@@ -47,7 +48,17 @@ class CollectionController extends Controller
             'collection_id' => $request->collection_id,
         ]);
 
-        $collection->save();
+        ImageSpec::create([
+            'collection_id' => $collection->id,
+            'height' => 700,
+            'width' => 0,
+        ]);
+
+        ImageSpec::create([
+            'collection_id' => $collection->id,
+            'height' => 350,
+            'width' => 0,
+        ]);
 
         return redirect()->route('admin.collections.index');
     }

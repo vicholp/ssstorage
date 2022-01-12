@@ -15,10 +15,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $file_id
  * @property int $collection_id
  * @property int|null $image_spec_id
- * @property-read \Illuminate\Database\Eloquent\Collection|File[] $childFiles
- * @property-read int|null $child_files_count
  * @property-read \App\Models\Collection $collection
- * @property-read File $parentFile
+ * @property-read File|null $file
+ * @property-read \Illuminate\Database\Eloquent\Collection|File[] $files
+ * @property-read int|null $files_count
+ * @property-read \App\Models\ImageSpec|null $imageSpec
  * @method static \Illuminate\Database\Eloquent\Builder|File newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|File newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|File query()
@@ -59,5 +60,16 @@ class File extends Model
     public function files()
     {
         return $this->hasMany(File::class, 'file_id');
+    }
+
+    public function getUrl()
+    {
+        return implode('/', $this->collection->getUrl()).'/'.$this->name;
+
+    }
+
+    public function imageSpec()
+    {
+        return $this->belongsTo(ImageSpec::class);
     }
 }

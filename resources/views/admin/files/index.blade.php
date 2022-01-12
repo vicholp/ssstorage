@@ -3,11 +3,11 @@
 @section('content')
   <div class="container mx-auto grid grid-cols-12 p-3 gap-3">
     <div class="col-span-12 flex flex-row items-center">
-      <a href="{{ route('admin.collections.index') }}" class="font-medium text-lg p-2 rounded inline-block text-opacity-80 text-black">
+      <a href="{{ route('admin.files.index') }}" class="font-medium text-lg p-2 rounded inline-block text-opacity-80 text-black">
         files
       </a>
       <a href="{{ route('admin.files.create') }}" class="bg-indigo-800 rounded p-3 text-white ml-auto inline-block">
-        Subir archivos
+        Upload
       </a>
     </div>
     <div class="col-span-12 bg-white rounded p-3 shadow">

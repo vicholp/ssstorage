@@ -24,7 +24,7 @@ class StoreCollectionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'bail|filled|alpha_num',
+            'name' => 'bail|filled|alpha_dash',
             'collection_id' => 'bail|nullable|exists:collections,id',
         ];
     }
