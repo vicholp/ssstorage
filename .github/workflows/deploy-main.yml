@@ -41,18 +41,6 @@ jobs:
           path: source/vendor
           key: ${{ runner.os }}-${{ hashFiles('source/composer.lock') }}
 
-      - name: Copy .env file
-        uses: up9cloud/action-rsync@v1.3
-        env:
-          HOST: ${{ secrets.SSH_HOST }}
-          USER: ${{ secrets.SSH_USER }}
-          KEY: ${{ secrets.SSH_KEY }}
-          PORT: ${{ secrets.SSH_PORT }}
-          MODE: pull
-          SOURCE: ${{ secrets.REMOTE_PATH_MAIN }}/.env
-          TARGET: ./source
-          VERBOSE: true
-
       - name: prod setup
         run: cd source ; bin/prod-setup
 
@@ -67,73 +55,3 @@ jobs:
         with:
           name: application
           path: application.tar
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: download application
-        uses: actions/download-artifact@v2
-        with:
-          name: application
-
-      - name: untar application
-        run: tar -x -f application.tar
-
-      - name: start deployment
-        uses: bobheadxi/deployments@v0.4.3
-        id: start_deploy
-        with:
-          step: start
-          token: ${{ secrets.GITHUB_TOKEN }}
-          env: staging
-
-      - name: laravel down
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: cd ${{ secrets.REMOTE_PATH_MAIN }} ; bin/prod-php artisan down --render="errors::503" --secret="force-up"
-          use_insecure_cipher: true
-
-      - name: deploy to server
-        uses: easingthemes/ssh-deploy@main
-        env:
-          ARGS: "-a -c -v -z -h --exclude-from='application/.rsyncignore' --delete-after"
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          TARGET: ${{ secrets.REMOTE_PATH_MAIN }}
-          SOURCE: application/
-
-      - name: laravel cache
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: cd ${{ secrets.REMOTE_PATH_MAIN }} ; bin/prod-env
-          use_insecure_cipher: true
-
-      - name: laravel up
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: cd ${{ secrets.REMOTE_PATH_MAIN }} ; bin/prod-php artisan up
-          use_insecure_cipher: true
-
-      - name: update deployment status
-        uses: bobheadxi/deployments@v0.4.3
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.GITHUB_TOKEN }}
-          status: ${{ job.status }}
-          deployment_id: ${{ steps.start_deploy.outputs.deployment_id }}
-          env_url: "${{ secrets.REMOTE_URL_MAIN }}"
