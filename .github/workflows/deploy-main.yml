@@ -41,6 +41,18 @@ jobs:
           path: source/vendor
           key: ${{ runner.os }}-${{ hashFiles('source/composer.lock') }}
 
+      - name: Copy .env file
+        uses: up9cloud/action-rsync@v1.3
+        env:
+          HOST: ${{ secrets.SSH_HOST }}
+          USER: ${{ secrets.SSH_USER }}
+          KEY: ${{ secrets.SSH_KEY }}
+          PORT: ${{ secrets.SSH_PORT }}
+          MODE: pull
+          SOURCE: ${{ secrets.REMOTE_PATH_MAIN }}/.env
+          TARGET: ./source
+          VERBOSE: true
+
       - name: prod setup
         run: cd source ; bin/prod-setup
 

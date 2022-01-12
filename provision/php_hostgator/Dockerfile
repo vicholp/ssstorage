@@ -28,8 +28,8 @@ RUN yum -y install \
 
 COPY httpd.conf /etc/httpd/conf/httpd.conf
 
-COPY httpd.conf /etc/httpd/conf/httpd.conf
+COPY php.ini /etc/php.ini
 
-ENTRYPOINT /usr/sbin/httpd -DFOREGROUND
+ENTRYPOINT /usr/sbin/httpd -D FOREGROUND
 
 WORKDIR /var/www/html
