@@ -1,4 +1,6 @@
 *
 !public/
 !assets/
+!private/
+!temp/
 !.gitignore
