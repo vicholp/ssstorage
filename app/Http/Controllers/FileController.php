@@ -42,7 +42,7 @@ class FileController extends Controller
      */
     public function store(StoreFileRequest $request)
     {
-        FileService::newFiles($request->file('files'), $request->collection_id);
+        FileService::newFiles($request->file('files'), $request->data);
 
         return redirect()->route('admin.files.index');
     }

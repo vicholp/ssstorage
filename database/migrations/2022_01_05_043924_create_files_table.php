@@ -21,6 +21,7 @@ class CreateFilesTable extends Migration
             $table->timestamps();
 
             $table->string('name', 512);
+            $table->string('extension', 512);
             $table->string('path', 512);
 
             $table->foreignId('file_id')->nullable()->constrained();

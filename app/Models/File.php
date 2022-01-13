@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * App\Models\File
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string $name
+ * @property string $extension
  * @property string $path
  * @property int|null $file_id
  * @property int $collection_id
@@ -25,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|File query()
  * @method static \Illuminate\Database\Eloquent\Builder|File whereCollectionId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereExtension($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereFileId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereImageSpecId($value)
@@ -37,6 +40,7 @@ class File extends Model
 {
     protected $fillable = [
         'name',
+        'extension',
         'path',
         'collection_id',
         'file_id',
@@ -47,9 +51,14 @@ class File extends Model
         return $this->belongsTo(Collection::class);
     }
 
-    public function path()
+    public function getRelativePath()
     {
-        return $this->path.'/'.$this->name;
+        return "{$this->path}/{$this->name}.{$this->extension}";
+    }
+
+    public function getAbsolutePath()
+    {
+        return Storage::path($this->getRelativePath());
     }
 
     public function file()

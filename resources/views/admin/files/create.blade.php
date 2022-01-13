@@ -9,7 +9,7 @@
       </div>
       <div class="grid grid-cols-12 gap-3">
         <span class="col-start-5 col-span-2">Parent collection: </span>
-        <select class="col-span-2" name="collection_id" class="rounded">
+        <select class="col-span-2" name="data[collection_id]" class="rounded">
           @foreach ($collections as $collection)
             <option value="{{ $collection->id }}">{{ $collection->name }}</option>
           @endforeach

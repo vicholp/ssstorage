@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $height
  * @property int|null $width
  * @property int $quality
- * @property-read \App\Models\Collection $collections
+ * @property-read \App\Models\Collection|null $collections
  * @method static \Illuminate\Database\Eloquent\Builder|ImageSpec newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ImageSpec newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ImageSpec query()

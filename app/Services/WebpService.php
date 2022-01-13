@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\Process\Process;
 
 /**
@@ -12,13 +13,11 @@ class WebpService
 {
     static public function create($file, $spec)
     {
-        $base_name = $file->name;
+        $file_name = $file->name;
 
-        $file_name = pathinfo($base_name, \PATHINFO_FILENAME);
-        $file_extesion = pathinfo($base_name, \PATHINFO_EXTENSION);
-
-        $old_path = "{$file->path}/{$base_name}";
-        $new_path = "{$file->path}/{$file_name}_{$spec->width}_{$spec->height}.webp";
+        $old_path = Storage::path($file->getRelativePath());
+        $relative_new_path = $file->path.'/'.$file_name."_{$spec->width}_{$spec->height}.webp";
+        $new_path = Storage::path($relative_new_path);
 
         $process = new Process([base_path('cwebp'), "-resize", $spec->width, $spec->height, $old_path, "-o", $new_path, "-quiet"]);
         $process->run();
@@ -27,6 +26,7 @@ class WebpService
             dd($process->getErrorOutput());
         }
 
-        return $new_path;
+        return $relative_new_path;
     }
+
 }
