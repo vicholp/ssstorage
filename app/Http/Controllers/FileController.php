@@ -44,7 +44,7 @@ class FileController extends Controller
     {
         FileService::newFiles($request->file('files'), $request->data);
 
-        return redirect()->route('admin.files.index');
+        return 'OK';
     }
 
     /**

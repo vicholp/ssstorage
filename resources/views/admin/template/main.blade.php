@@ -14,15 +14,16 @@
 
     @stack('import_head')
   </head>
-  <body class="bg-gray-100">
+  <body class="bg-gray-100" >
+    <div id="app">
+      @include('admin.template.navbar')
 
-    @include('admin.template.navbar')
+      <div class="min-h-screen">
+        @yield('content')
+      </div>
 
-    <div class="min-h-screen">
-      @yield('content')
+      @include('admin.template.brand')
     </div>
-
-    @include('admin.template.brand')
 
     <script defer src="{{ mix('/js/manifest.js') }}"></script>
     <script defer src="{{ mix('/js/vendor.js') }}"></script>

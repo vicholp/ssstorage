@@ -24,8 +24,8 @@ class StoreFileRequest extends FormRequest
     public function rules()
     {
         return [
-            'image.*' => 'bail|file',
-            'collection_id' => 'bail|filled|exists:collections,id',
+            'image.*' => 'bail|required|file',
+            'data.collection_id' => 'bail|required|exists:collections,id',
         ];
     }
 }
