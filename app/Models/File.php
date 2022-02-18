@@ -73,7 +73,7 @@ class File extends Model
 
     public function getUrl()
     {
-        return implode('/', $this->collection->getUrl()).'/'.$this->name;
+        return implode('/', $this->collection->getUrl()).'/'.$this->name.'.'.$this->extension;
 
     }
 
