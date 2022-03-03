@@ -2,7 +2,5 @@
 
 set -e
 
-sudo false
-
-sudo chmod o+w -R ./bootstrap/
-sudo chmod o+w -R ./storage/
+chmod a+w -R ./bootstrap/
+chmod a+w -R ./storage/

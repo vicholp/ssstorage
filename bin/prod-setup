@@ -2,7 +2,8 @@
 
 set -e
 
-composer install --no-ansi --no-dev --no-interaction --no-plugins --no-progress --no-scripts --optimize-autoloader
+cp .env.example .env
+cp public/.htaccess.example public/.htaccess
 
-npm i --only=prod
-npm run prod
+./bin/prod-php artisan key:generate
+./bin/prod-php artisan storage:link --relative
