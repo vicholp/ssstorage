@@ -6,6 +6,8 @@ use App\Jobs\HandleNewFile;
 use App\Models\Collection;
 use App\Models\File;
 use App\Models\ImageSpec;
+use App\Models\Upload;
+use App\Models\UploadFile;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileExistsException;
@@ -21,24 +23,37 @@ class FileService
         'image/png',
     ];
 
-    static public function newFiles(Array $files, Array $data) : void
+    static public function newFiles(Array $files, Array $data) : Upload
     {
+        $upload = Upload::create();
+
         foreach ($files as $file){
-            self::newFile($file, $data);
+            $upload_file_mode = $upload->uploadFiles()->create([
+                'result' => 'pending',
+                'filename' => $file->getClientOriginalName(),
+            ]);
+
+            self::newFile($file, $upload_file_mode, $data);
         }
+
+        return $upload->load('uploadFiles');
     }
 
-    static private function newFile(UploadedFile $file, Array $data) : void
+    static private function newFile(UploadedFile $file, UploadFile $model, Array $data) : void
     {
         $data['file_name'] = pathinfo($file->getClientOriginalName(), \PATHINFO_FILENAME);
         $data['file_extension'] = $file->getClientOriginalExtension();
         $data['disk'] = "public";
+        $data['upload_file_id'] = $model->id;
 
         $file_path = Storage::disk('temp')->putFile('/', $file);
 
         $relative_path = 'temp/'.$file_path;
 
         HandleNewFile::dispatch($relative_path, $data);
+
+        $model->result = 'waiting';
+        $model->save();
     }
 
     static public function storeFile(string $old_path, Array $data) : void
@@ -49,11 +64,20 @@ class FileService
         $file_dirname = $data['disk'].'/'.$collection->getPath();
         $new_path = $file_dirname.'/'.$file_basename;
 
-        try{
+        $model = UploadFile::find($data['upload_file_id']);
+
+        if (Storage::disk('local')->exists($new_path)){
+            Storage::disk('local')->delete($new_path);
             Storage::disk('local')->move($old_path, $new_path);
-        }catch(FileExistsException $e){
-            Storage::disk('local')->delete($old_path);
+
+            $model->result = 'replaced';
+        }else{
+            Storage::disk('local')->move($old_path, $new_path);
+
+            $model->result = 'stored';
         }
+
+        $model->save();
 
         $file = File::updateOrCreate([
             'name' => $data['file_name'],

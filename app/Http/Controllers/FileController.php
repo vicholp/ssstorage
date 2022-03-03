@@ -42,9 +42,9 @@ class FileController extends Controller
      */
     public function store(StoreFileRequest $request)
     {
-        FileService::newFiles($request->file('files'), $request->data);
+        $upload = FileService::newFiles($request->file('files'), $request->data);
 
-        return 'OK';
+        return $upload;
     }
 
     /**

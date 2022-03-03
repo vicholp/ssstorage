@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 
@@ -11,5 +12,6 @@ Route::post('files/upload', [FileController::class, 'store'])->name('files.store
 
 Route::resource('files', FileController::class);
 Route::resource('collections', CollectionController::class);
+Route::apiResource('uploads', UploadController::class);
 
 Route::get('logs', [LogViewerController::class, 'index'])->name('logs');

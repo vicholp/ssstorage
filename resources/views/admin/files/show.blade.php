@@ -9,7 +9,7 @@
       <a href="{{ '/src/' . $file->getUrl() }}" class="bg-gray-200 rounded p-3 text-black inline-block ml-auto">
         Preview
       </a>
-      <a  class="bg-indigo-300 rounded p-3 text-white inline-block">
+      <a class="bg-indigo-300 rounded p-3 text-white inline-block">
         Edit
       </a>
     </div>
