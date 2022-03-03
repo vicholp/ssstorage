@@ -1,4 +1,4 @@
-name: Deploy prod
+name: Build prod
 
 on:
   push:
@@ -41,8 +41,8 @@ jobs:
           path: source/vendor
           key: ${{ runner.os }}-${{ hashFiles('source/composer.lock') }}
 
-      - name: prod setup
-        run: cd source ; bin/prod-setup
+      - name: cd setup
+        run: cd source ; bin/cd-setup
 
       - name: purge ignored files
         run: rsync -a -c -v -z -h --exclude-from='source/.rsyncignore' source/ application
